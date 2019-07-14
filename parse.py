@@ -5,9 +5,7 @@ def get_dynatrace_integrations():
     with open('./dt_integrations.html') as integrations_file:
         integrations_text = integrations_file.read()
 
-    results = re.findall("class=\"icon\" aria-label=\"(.*?)\"", integrations_text)
-    DT_INTS = [tag.lstrip('aria-label=\"').rstrip(' logo\"') for tag in results]
-
+    DT_INTS = re.findall('symbol id=\"(.*?)\"', integrations_text)
     return DT_INTS
 
 ''' html source from: https://app.eu0.signalfx.com/#/integrations (needs login)'''
