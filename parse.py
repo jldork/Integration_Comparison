@@ -1,29 +1,44 @@
 import re
 
+''' html source from: https://www.dynatrace.com/technologies/ '''
 def get_dynatrace_integrations():
     with open('./dt_integrations.html') as integrations_file:
         integrations_text = integrations_file.read()
 
-    results = re.findall("aria-label=\".*\"", integrations_text)
+    results = re.findall("class=\"icon\" aria-label=\"(.*?)\"", integrations_text)
     DT_INTS = [tag.lstrip('aria-label=\"').rstrip(' logo\"') for tag in results]
 
     return DT_INTS
 
+''' html source from: https://app.eu0.signalfx.com/#/integrations (needs login)'''
+def get_signalfx_integrations():
+    with open('./sfx_integrations.html') as integrations_file:
+        integrations_text = integrations_file.read()
+
+    results = re.findall('<h4 class=\"ng-binding\">(.*?)</h4>', integrations_text)
+    SFX_INTS = [x for x in results if "Signal" not in x]
+
+    return SFX_INTS
+
+''' html source from: https://docs.datadoghq.com/integrations '''
 def get_datadog_integrations():
     with open('./dd_integrations.html') as integrations_file:
         integrations_text = integrations_file.read()
-
-    results = re.findall("href=\"https://docs.datadoghq.com/integrations/.*\"", integrations_text)
-    DD_INTS = set([tag.split('integrations/')[1].rstrip("\"") for tag in results])
-
+    DD_INTS = re.findall('<h4 class=\"card-title\">(.*?)</h4>', integrations_text)
     return DD_INTS
-    
+
 DT_INTS = get_dynatrace_integrations()
+SFX_INTS = get_signalfx_integrations()
 DD_INTS = get_datadog_integrations()
 
 print("\nDYNATRACE\n========")
 print("We have found {} integrations:".format(str(len(DT_INTS))))
 print(DT_INTS)
+
+print("\nSignalFX\n========")
+print("We have found {} integrations:".format(str(len(SFX_INTS))))
+print(SFX_INTS)
+
 
 print("\nDATADOG\n========")
 print("We have found {} integrations:".format(str(len(DD_INTS))))
