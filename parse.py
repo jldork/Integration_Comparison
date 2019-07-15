@@ -8,12 +8,12 @@ def get_dynatrace_integrations():
     DT_INTS = re.findall('symbol id=\"(.*?)\"', integrations_text)
     return DT_INTS
 
-''' html source from: https://app.eu0.signalfx.com/#/integrations (needs login)'''
+''' html source from: https://www.signalfx.com/integrations/ '''
 def get_signalfx_integrations():
     with open('./sfx_integrations.html') as integrations_file:
         integrations_text = integrations_file.read()
 
-    results = re.findall('<h4 class=\"ng-binding\">(.*?)</h4>', integrations_text)
+    results = re.findall('<h2 class=\"h2-2\">(.*?)</h2>', integrations_text)
     SFX_INTS = [x for x in results if "Signal" not in x]
 
     return SFX_INTS
