@@ -10,7 +10,7 @@ def get_dynatrace_integrations():
 def get_signalfx_integrations():
     r = requests.get("https://www.signalfx.com/integrations/")
     results = re.findall('<h2 class=\"h2-2\">(.*?)</h2>', r.text)
-    SFX_INTS = [x for x in results if "Signal" not in x]
+    SFX_INTS = [x for x in results if "Signal" and "[New]" not in x]
 
     return SFX_INTS
 
